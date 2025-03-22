@@ -10,12 +10,27 @@ interface Domain {
 	available: boolean;
 }
 
+const STORAGE_KEY = "savedDomains";
+
 const Challenge: React.FC = () => {
 	const [domains, setDomains] = useState<Domain[]>([]);
 	const [numDomainsRequired, setNumDomainsRequired] = useState(3);
 
 	useEffect(() => {
 		console.log("Domains updated", domains);
+	}, [domains]);
+
+	// Load domains from localStorage when component mounts
+	useEffect(() => {
+		const storedDomains = localStorage.getItem(STORAGE_KEY);
+		if (storedDomains) {
+			setDomains(JSON.parse(storedDomains));
+		}
+	}, []);
+
+	// Save domains to localStorage whenever they change
+	useEffect(() => {
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(domains));
 	}, [domains]);
 
 	const sortedDomains = useMemo(() => {
@@ -33,9 +48,10 @@ const Challenge: React.FC = () => {
 	}, [domains]);
 
 	const addDomain = async (domain: string) => {
+		const lowercasedDomain = domain.toLowerCase();
 		if (!domains.some(d => d.name === domain)) {
-			const available = await isDomainAvailable(domain);
-			setDomains([...domains, { name: domain, available }]);
+			const available = await isDomainAvailable(lowercasedDomain);
+			setDomains([...domains, { name: lowercasedDomain, available }]);
 		}
 	};
 
