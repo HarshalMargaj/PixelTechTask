@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { validateDomain } from "@/lib/resources";
 import { FaSpinner } from "react-icons/fa";
 import { Button } from "@/app/_components/Button";
+import { IoClose } from "react-icons/io5";
 
 interface DomainMultiSelectProps {
 	onAddDomain: (domain: string) => void;
@@ -69,18 +70,45 @@ const DomainMultiSelect = ({
 	return (
 		<div className="relative w-full">
 			<div className="flex flex-col md:flex-row gap-4">
-				<input
-					ref={inputRef}
-					type="text"
-					placeholder="Enter domain name (e.g., example.com)"
-					className={`border p-2 rounded w-full text-neutral-50 ${
-						error ? "border-red-500" : "border-neutral-500"
-					}`}
-					value={inputValue}
-					onChange={e => setInputValue(e.target.value)}
-					onKeyDown={handleKeyPress}
-					disabled={loading}
-				/>
+				{/* <div className="w-full">
+					<input
+						ref={inputRef}
+						type="text"
+						placeholder="Enter domain name (e.g., example.com)"
+						className={`border p-2 rounded w-full text-neutral-50 ${
+							error ? "border-red-500" : "border-neutral-500"
+						}`}
+						value={inputValue}
+						onChange={e => setInputValue(e.target.value)}
+						onKeyDown={handleKeyPress}
+						disabled={loading}
+					/>
+					<IoClose />
+				</div> */}
+				<div
+					className={`w-full flex items-center border p-2 rounded ${
+						error
+							? "border-red-500"
+							: "border-neutral-500 focus-within:border-blue-500"
+					} `}
+				>
+					<input
+						ref={inputRef}
+						type="text"
+						placeholder="Enter domain name (e.g., example.com)"
+						className="w-full text-neutral-50 outline-none bg-transparent"
+						value={inputValue}
+						onChange={e => setInputValue(e.target.value)}
+						onKeyDown={handleKeyPress}
+						disabled={loading}
+					/>
+					{inputValue.length > 0 && (
+						<IoClose
+							className="cursor-pointer text-neutral-50"
+							onClick={() => setInputValue("")}
+						/>
+					)}
+				</div>
 				<Button onClick={handleAddDomain} color="green">
 					{loading ? (
 						<FaSpinner className="animate-spin text-white text-lg" />
