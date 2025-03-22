@@ -24,33 +24,43 @@ const DomainMultiSelect = ({
 	const [loading, setLoading] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 
+	// Function to handle adding a new domain
 	const handleAddDomain = async () => {
+		// Validate the domain before proceeding
 		const errorMessage = validateDomain({
-			domain: inputValue,
-			domains,
-			validExtensions,
+			domain: inputValue, // User-inputted domain name
+			domains, // Existing domains list
+			validExtensions, // Allowed domain extensions (e.g., .com, .xyz, .app)
 		});
 
+		// If validation fails, set error message and exit function
 		if (errorMessage) {
 			setError(errorMessage);
 			return;
 		}
 
-		setLoading(true);
+		setLoading(true); // Show loading state while checking domain availability
 		try {
+			// Attempt to add the domain
 			await onAddDomain(inputValue);
+
+			// Reset input field and error state after successful addition
 			setInputValue("");
 			setError("");
+
+			// Refocus the input field after adding a domain
 			setTimeout(() => {
 				inputRef.current?.focus();
 			}, 0);
 		} catch (err) {
+			// Handle errors if domain addition fails
 			setError("Failed to add domain. Please try again.");
 		} finally {
-			setLoading(false);
+			setLoading(false); // Stop loading state
 		}
 	};
 
+	// Function to handle pressing "Enter" to add a domain
 	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Enter") handleAddDomain();
 	};

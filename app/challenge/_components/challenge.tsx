@@ -48,25 +48,35 @@ const Challenge: React.FC = () => {
 	}, [domains]);
 
 	const addDomain = async (domain: string) => {
+		// Convert the input domain to lowercase to ensure consistency
 		const lowercasedDomain = domain.toLowerCase();
-		if (!domains.some(d => d.name === domain)) {
+
+		// Check if the domain is already in the list to prevent duplicates
+		if (!domains.some(d => d.name === lowercasedDomain)) {
+			// Check if the domain is available
 			const available = await isDomainAvailable(lowercasedDomain);
+
+			// Update the state with the new domain
 			setDomains([...domains, { name: lowercasedDomain, available }]);
 		}
 	};
 
+	// Function to remove a specific domain from the list
 	const removeDomain = (domain: string) => {
 		setDomains(domains.filter(d => d.name !== domain));
 	};
 
+	// Function to clear all domains from the list
 	const clearCart = () => {
 		setDomains([]);
 	};
 
+	// Function to remove all unavailable domains from the list
 	const removeUnavailable = () => {
 		setDomains(domains.filter(d => d.available));
 	};
 
+	// Function to keep only the best-ranked domains based on sorting logic
 	const keepBestDomains = () => {
 		setDomains(sortedDomains.slice(0, numDomainsRequired));
 	};
