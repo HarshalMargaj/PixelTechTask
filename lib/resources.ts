@@ -1,5 +1,5 @@
 // Function to simulate checking domain availability (mock API call)
-export const isDomainAvailable = async (domain: string): Promise<boolean> => {
+export const isDomainAvailable = async (): Promise<boolean> => {
 	return new Promise(resolve => {
 		setTimeout(() => {
 			resolve(Math.random() > 0.5); // Randomly marks domain as available/unavailable

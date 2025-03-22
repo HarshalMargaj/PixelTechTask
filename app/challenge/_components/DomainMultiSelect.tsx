@@ -54,6 +54,7 @@ const DomainMultiSelect = ({
 			}, 0);
 		} catch (err) {
 			// Handle errors if domain addition fails
+			console.error(err);
 			setError("Failed to add domain. Please try again.");
 		} finally {
 			setLoading(false); // Stop loading state

@@ -14,7 +14,7 @@ const STORAGE_KEY = "savedDomains";
 
 const Challenge: React.FC = () => {
 	const [domains, setDomains] = useState<Domain[]>([]);
-	const [numDomainsRequired, setNumDomainsRequired] = useState(3);
+	const [numDomainsRequired] = useState(3);
 
 	useEffect(() => {
 		console.log("Domains updated", domains);
@@ -54,7 +54,7 @@ const Challenge: React.FC = () => {
 		// Check if the domain is already in the list to prevent duplicates
 		if (!domains.some(d => d.name === lowercasedDomain)) {
 			// Check if the domain is available
-			const available = await isDomainAvailable(lowercasedDomain);
+			const available = await isDomainAvailable();
 
 			// Update the state with the new domain
 			setDomains([...domains, { name: lowercasedDomain, available }]);
