@@ -1,9 +1,9 @@
 "use client";
-import { isDomainAvailable } from "@/lib/resources";
 import React, { useState, useEffect, useMemo } from "react";
-import DomainMultiSelect from "./DomainMultiSelect";
-import DomainList from "./DomainList";
-import ActionButtons from "./ActionButtons";
+import { isDomainAvailable } from "@/lib/resources";
+import DomainMultiSelect from "@/app/challenge/_components/DomainMultiSelect";
+import DomainList from "@/app/challenge/_components/DomainList";
+import ActionButtons from "@/app/challenge/_components/ActionButtons";
 
 interface Domain {
 	name: string;
@@ -56,8 +56,8 @@ const Challenge: React.FC = () => {
 	};
 
 	return (
-		<div className="px-30 mx-auto p-4">
-			<h1 className="text-4xl text-center font-bold mb-4 text-green-300">
+		<div className="max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto px-4 sm:px-6 md:px-8 pt-10">
+			<h1 className="text-2xl sm:text-3xl md:text-4xl text-center font-bold mb-8 bg-gradient-to-r from-white to-neutral-400 bg-clip-text text-transparent">
 				Domain Shopping Cart
 			</h1>
 			<DomainMultiSelect

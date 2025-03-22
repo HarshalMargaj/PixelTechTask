@@ -1,12 +1,12 @@
 import React from "react";
-import { List } from "./List";
+import { List } from "@/app/challenge/_components/List";
 
 interface DomainListProps {
 	domains: { name: string; available: boolean }[];
 	onRemoveDomain: (domain: string) => void;
 }
 
-const DomainList: React.FC<DomainListProps> = ({ domains, onRemoveDomain }) => {
+const DomainList = ({ domains, onRemoveDomain }: DomainListProps) => {
 	return (
 		<div
 			className={`${
@@ -15,7 +15,7 @@ const DomainList: React.FC<DomainListProps> = ({ domains, onRemoveDomain }) => {
 			}`}
 		>
 			{domains.length > 0 && (
-				<div className="text-neutral-100 font-bold text-2xl">Cart</div>
+				<div className="text-neutral-200 font-bold text-2xl">Cart</div>
 			)}
 			{domains.map(domain => (
 				<List

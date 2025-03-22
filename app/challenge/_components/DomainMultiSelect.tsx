@@ -1,29 +1,29 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { validateDomain } from "@/lib/resources";
-import { FaSpinner } from "react-icons/fa"; // ✅ Import spinner icon
+import { FaSpinner } from "react-icons/fa";
+import { Button } from "@/app/_components/Button";
 
 interface DomainMultiSelectProps {
 	onAddDomain: (domain: string) => void;
-	numDomainsRequired: number; // Required number of domains
-	totalDomains: number; // Current number of domains in the cart
+	numDomainsRequired: number;
+	totalDomains: number;
 	domains: { name: string; available: boolean }[];
 }
 
 const validExtensions = [".com", ".xyz", ".app"];
 
-const DomainMultiSelect: React.FC<DomainMultiSelectProps> = ({
+const DomainMultiSelect = ({
 	onAddDomain,
 	numDomainsRequired,
 	totalDomains,
 	domains,
-}) => {
+}: DomainMultiSelectProps) => {
 	const [inputValue, setInputValue] = useState("");
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 
-	// ✅ Handle adding domains
 	const handleAddDomain = async () => {
 		const errorMessage = validateDomain({
 			domain: inputValue,
@@ -40,7 +40,7 @@ const DomainMultiSelect: React.FC<DomainMultiSelectProps> = ({
 		try {
 			await onAddDomain(inputValue);
 			setInputValue("");
-			setError(""); // Clear errors on success
+			setError("");
 			setTimeout(() => {
 				inputRef.current?.focus();
 			}, 0);
@@ -51,20 +51,18 @@ const DomainMultiSelect: React.FC<DomainMultiSelectProps> = ({
 		}
 	};
 
-	// ✅ Handle Enter key press
 	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Enter") handleAddDomain();
 	};
 
 	return (
 		<div className="relative w-full">
-			{/* ✅ Input Field */}
-			<div className="flex items-center gap-4">
+			<div className="flex flex-col md:flex-row gap-4">
 				<input
 					ref={inputRef}
 					type="text"
 					placeholder="Enter domain name (e.g., example.com)"
-					className={`border-1  p-2 rounded w-full text-neutral-50 ${
+					className={`border p-2 rounded w-full text-neutral-50 ${
 						error ? "border-red-500" : "border-neutral-500"
 					}`}
 					value={inputValue}
@@ -72,26 +70,19 @@ const DomainMultiSelect: React.FC<DomainMultiSelectProps> = ({
 					onKeyDown={handleKeyPress}
 					disabled={loading}
 				/>
-				<button
-					className="flex justify-center items-center bg-green-700 text-white hover:bg-green-800 px-2 py-2 rounded disabled:opacity-50 cursor-pointer w-[150px] h-10"
-					onClick={handleAddDomain}
-				>
+				<Button onClick={handleAddDomain} color="green">
 					{loading ? (
-						<FaSpinner className="animate-spin text-white text-lg " />
+						<FaSpinner className="animate-spin text-white text-lg" />
 					) : (
-						"Add Domain"
+						"Add"
 					)}
-				</button>
+				</Button>
 			</div>
 
-			{/* ✅ Error Message */}
 			{error && <p className="text-red-500 text-sm my-2">{error}</p>}
 
-			{/* ✅ Add Button */}
-
-			{/* ✅ Cart Status */}
 			{domains.length > 0 && (
-				<div className="text-sm mb-2 mt-2 text-neutral-700">
+				<div className="text-sm mt-2 text-neutral-700">
 					<strong>{totalDomains}</strong> out of{" "}
 					<strong>{numDomainsRequired}</strong> domains added.
 					{totalDomains > numDomainsRequired && (

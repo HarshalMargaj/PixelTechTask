@@ -1,7 +1,7 @@
 "use client";
 
 import { BiTrash } from "react-icons/bi";
-import { Button } from "./Button";
+import { Button } from "../../_components/Button";
 
 interface ListProps {
 	domain: { name: string; available: boolean };

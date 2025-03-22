@@ -1,5 +1,5 @@
 import React from "react";
-import Challenge from "./_components/challenge";
+import Challenge from "@/app/challenge/_components/challenge";
 
 const Page = () => {
 	return (

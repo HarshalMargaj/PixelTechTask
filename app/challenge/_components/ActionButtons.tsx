@@ -1,7 +1,6 @@
 "use client";
-
 import React from "react";
-import { Button } from "@/app/challenge/_components/Button";
+import { Button } from "@/app/_components/Button";
 
 interface ActionButtonsProps {
 	domains: string[];
@@ -11,13 +10,13 @@ interface ActionButtonsProps {
 	onKeepBestDomains: () => void;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({
+const ActionButtons = ({
 	domains,
 	onClearCart,
 	numDomainsRequired,
 	onRemoveUnavailable,
 	onKeepBestDomains,
-}) => {
+}: ActionButtonsProps) => {
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(domains.join(", "));
 	};
@@ -25,7 +24,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 	const isExactCount = domains.length !== numDomainsRequired;
 
 	return (
-		<div className="flex space-x-2 mt-4 justify-center">
+		<div className="grid grid-cols-2 gap-2 sm:flex sm:space-x-2 mt-4 justify-center">
 			<Button onClick={onClearCart} color="neutral">
 				Clear Cart
 			</Button>
