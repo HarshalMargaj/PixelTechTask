@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { validateDomain } from "@/lib/resources";
+import { FaSpinner } from "react-icons/fa"; // ✅ Import spinner icon
 
 interface DomainMultiSelectProps {
 	onAddDomain: (domain: string) => void;
@@ -20,14 +21,13 @@ const DomainMultiSelect: React.FC<DomainMultiSelectProps> = ({
 	const [inputValue, setInputValue] = useState("");
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	// ✅ Handle adding domains
 	const handleAddDomain = async () => {
 		const errorMessage = validateDomain({
 			domain: inputValue,
 			domains,
-			totalDomains,
-			numDomainsRequired,
 			validExtensions,
 		});
 
@@ -41,6 +41,9 @@ const DomainMultiSelect: React.FC<DomainMultiSelectProps> = ({
 			await onAddDomain(inputValue);
 			setInputValue("");
 			setError(""); // Clear errors on success
+			setTimeout(() => {
+				inputRef.current?.focus();
+			}, 0);
 		} catch (err) {
 			setError("Failed to add domain. Please try again.");
 		} finally {
@@ -56,40 +59,49 @@ const DomainMultiSelect: React.FC<DomainMultiSelectProps> = ({
 	return (
 		<div className="relative w-full">
 			{/* ✅ Input Field */}
-			<input
-				type="text"
-				placeholder="Enter domain name (e.g., example.com)"
-				className={`border p-2 rounded w-full mb-2 ${
-					error ? "border-red-500" : ""
-				}`}
-				value={inputValue}
-				onChange={e => setInputValue(e.target.value)}
-				onKeyDown={handleKeyPress}
-				disabled={loading}
-			/>
+			<div className="flex items-center gap-4">
+				<input
+					ref={inputRef}
+					type="text"
+					placeholder="Enter domain name (e.g., example.com)"
+					className={`border-1  p-2 rounded w-full text-neutral-50 ${
+						error ? "border-red-500" : "border-neutral-500"
+					}`}
+					value={inputValue}
+					onChange={e => setInputValue(e.target.value)}
+					onKeyDown={handleKeyPress}
+					disabled={loading}
+				/>
+				<button
+					className="flex justify-center items-center bg-green-700 text-white hover:bg-green-800 px-2 py-2 rounded disabled:opacity-50 cursor-pointer w-[150px] h-10"
+					onClick={handleAddDomain}
+				>
+					{loading ? (
+						<FaSpinner className="animate-spin text-white text-lg " />
+					) : (
+						"Add Domain"
+					)}
+				</button>
+			</div>
 
 			{/* ✅ Error Message */}
-			{error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+			{error && <p className="text-red-500 text-sm my-2">{error}</p>}
 
 			{/* ✅ Add Button */}
-			<button
-				className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-				onClick={handleAddDomain}
-			>
-				{loading ? <span>Adding domain...</span> : "Add Domain"}
-			</button>
 
 			{/* ✅ Cart Status */}
-			<div className="text-sm mb-2 mt-2">
-				<strong>{totalDomains}</strong> out of{" "}
-				<strong>{numDomainsRequired}</strong> domains added.
-				{totalDomains > numDomainsRequired && (
-					<span className="text-red-500">
-						{" "}
-						You need to remove some domains.
-					</span>
-				)}
-			</div>
+			{domains.length > 0 && (
+				<div className="text-sm mb-2 mt-2 text-neutral-700">
+					<strong>{totalDomains}</strong> out of{" "}
+					<strong>{numDomainsRequired}</strong> domains added.
+					{totalDomains > numDomainsRequired && (
+						<span className="text-red-500">
+							{" "}
+							You need to remove some domains.
+						</span>
+					)}
+				</div>
+			)}
 		</div>
 	);
 };

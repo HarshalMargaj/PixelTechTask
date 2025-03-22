@@ -56,8 +56,10 @@ const Challenge: React.FC = () => {
 	};
 
 	return (
-		<div className="container mx-auto p-4">
-			<h1 className="text-2xl font-bold mb-4">Domain Shopping Cart</h1>
+		<div className="px-30 mx-auto p-4">
+			<h1 className="text-4xl text-center font-bold mb-4 text-green-300">
+				Domain Shopping Cart
+			</h1>
 			<DomainMultiSelect
 				onAddDomain={addDomain}
 				numDomainsRequired={numDomainsRequired}
@@ -65,13 +67,15 @@ const Challenge: React.FC = () => {
 				domains={domains}
 			/>
 			<DomainList domains={domains} onRemoveDomain={removeDomain} />
-			<ActionButtons
-				domains={domains.map(d => d.name)}
-				onClearCart={clearCart}
-				numDomainsRequired={numDomainsRequired}
-				onRemoveUnavailable={removeUnavailable}
-				onKeepBestDomains={keepBestDomains}
-			/>
+			{domains.length > 0 && (
+				<ActionButtons
+					domains={domains.map(d => d.name)}
+					onClearCart={clearCart}
+					numDomainsRequired={numDomainsRequired}
+					onRemoveUnavailable={removeUnavailable}
+					onKeepBestDomains={keepBestDomains}
+				/>
+			)}
 		</div>
 	);
 };

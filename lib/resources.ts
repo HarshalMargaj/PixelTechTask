@@ -9,16 +9,12 @@ export const isDomainAvailable = async (domain: string): Promise<boolean> => {
 interface validateDomainProps {
 	domain: string;
 	domains: { name: string; available: boolean }[];
-	totalDomains: number;
-	numDomainsRequired: number;
 	validExtensions: string[];
 }
 
 export const validateDomain = ({
 	domain,
 	domains,
-	totalDomains,
-	numDomainsRequired,
 	validExtensions,
 }: validateDomainProps) => {
 	domain = domain.toLowerCase().trim();
@@ -26,8 +22,6 @@ export const validateDomain = ({
 	if (!domain) return "Domain name cannot be empty.";
 	if (domains.some(d => d.name === domain))
 		return "This domain is already in the cart.";
-	if (totalDomains >= numDomainsRequired)
-		return "Cart is full. Remove a domain to add more.";
 	if (!validExtensions.some(ext => domain.endsWith(ext)))
 		return "Invalid domain extension.";
 	if (/https?:\/\//.test(domain))
