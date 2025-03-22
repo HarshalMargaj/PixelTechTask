@@ -18,7 +18,7 @@ const colorClasses: Record<string, string> = {
 export const Button = ({ children, onClick, color, disabled }: ButtonProps) => {
 	return (
 		<button
-			className={`px-4 py-2 text-sm rounded font-medium ${
+			className={`px-4 py-2 text-sm rounded font-medium flex items-center justify-center ${
 				colorClasses[color]
 			} 
 				${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
